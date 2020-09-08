@@ -1,14 +1,13 @@
 Lab - Compliance Operator
 =========================
 
-This workshop provides an introduction to deploying a the [compliance-operator](https://github.com/openshift/compliance-operator) and using it to evaluate the state of compliance with the E8 benchmark.
+This workshop provides an introduction to deploying a the
+[compliance-operator](https://github.com/openshift/compliance-operator)
+and using it to evaluate the state of compliance with the E8 benchmark.
 
 Note that the `cluster-admin` role is required in order to install the operator
+and the operator requires OpenShift 4.6 or newer.
 
-Installation
-------------
-
-* OLM installation steps
 
 Create your first scan
 ----------------------

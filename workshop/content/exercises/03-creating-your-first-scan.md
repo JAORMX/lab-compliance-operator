@@ -388,3 +388,19 @@ $ ls
 $ ls 0 
 openscap-pod-9294a45c73ef807cf82327f147f061fe3833eab7.xml.bzip2  openscap-pod-c41c6ef35a2ed0e442ae209120013ae708417c13.xml.bzip2  openscap-pod-e3f56090e7127d8499113d5188e2a83c18060007.xml.bzip2
 ```
+
+
+Note that spawning a pod that mounts the Persistent Volume will keep the claim
+as **Bound**. If the volume’s storage class that you’re using is
+`ReadWriteOnce`, the volume is only mountable by one pod at a time. For this
+reason, it’s important to delete the pod afterwards, since that way, when
+running a subsequent scan, it’ll be possible for the operator to just schedule
+a pod and keep storing the results there.
+
+So, just do:
+
+```
+$ oc delete pod pv-extract
+```
+
+Once you’re done with the extraction.

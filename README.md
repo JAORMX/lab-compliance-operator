@@ -57,3 +57,8 @@ content, it would surely help you understand the bigger picture.
 There is a [self-paced lab](https://github.com/RedHatDemos/SecurityDemos/tree/master/2019Labs/CustomSecurityContent/documentation)
 that you can follow to learn about OpenSCAP and how to write content. We highly
 recommend it.
+
+Ready?
+======
+
+[Start the lab](workshop/content/index.md)

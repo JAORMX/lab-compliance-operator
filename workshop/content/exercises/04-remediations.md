@@ -396,3 +396,5 @@ objects, and finally un-paused the pools.
 
 We can now wait for the **machine-config-operator** to converge the status of the nodes by rebooting and
 applying the configurations.
+
+Let's now move to the next section, which teaches us how to [tailor our profiles](05-tailoring-profiles.md)

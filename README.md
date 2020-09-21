@@ -3,48 +3,57 @@ Lab - Compliance Operator
 
 This workshop provides an introduction to deploying a the
 [compliance-operator](https://github.com/openshift/compliance-operator)
-and using it to evaluate the state of compliance with the E8 benchmark.
+and using it to evaluate the state of compliance with a benchmark.
 
-Note that the `cluster-admin` role is required in order to install the operator
-and the operator requires OpenShift 4.6 or newer.
+Agenda
+------
 
+The agenda for the workshop looks as follows:
 
-Create your first scan
-----------------------
+### Creating your first scan
 
-* browsing profiles
-* browsing rules
+* Browsing profiles
+* Browsing rules
 * Creating ScanSettingBinding
-* tracking scan progress
+* Tracking scan progress
 * Browsing results
-    * check results are labeled
-* Fetch raw results
+* Fetching raw results
 
-Remediate
----------
+### Remediate
 
- * edit one remediation, apply
- * pause the pool if applying multiple
- * apply a couple
- * unpause
- * show autoApply
- * rescan
+ * Edit one remediation, apply
+ * Apply a couple of remediations
+ * Auto-applying remediations
 
+### Tailoring profiles
 
-Tailor the profile
-------------------
+ * Basic tailoring - disabling rules
 
- * create a TailoredProfile that disables some rules
- * run the scan again, show they they didn't run (or are not evaluated?)
+### Troubleshooting
 
-Troubleshooting
+ * General tips
+ * Useful labels
+ * Troubleshooting OpenSCAP
+
+What to expect?
 ---------------
 
- * add the debug flag
- * see that the pods are still around
- * oc log-ing the openscap container shows the logs (maybe combine with using a single rule only?)
+A cluster will be provided for you as well as a link to download the relevant CLI client.
 
- Creating custom rules (new content)
- -----------------------------------
+Prerequisites
+-------------
 
-* 
+### Kubernetes/OpenShift
+
+Basic knowledge of Kubernetes or OpenShift is required for this lab. The
+resources in [learn.openshift.com](https://learn.openshift.com/) are quite
+useful. We would recommend starting with the labs in the
+[Using OpenShift](https://learn.openshift.com/using-the-cluster/) section.
+
+### OpenScap/Content writing
+While it is not mandatory that you have knowledge of using OpenSCAP or writing
+content, it would surely help you understand the bigger picture.
+
+There is a [self-paced lab](https://github.com/RedHatDemos/SecurityDemos/tree/master/2019Labs/CustomSecurityContent/documentation)
+that you can follow to learn about OpenSCAP and how to write content. We highly
+recommend it.

@@ -4,7 +4,7 @@ PrevPage: 01-compliance-operator
 NextPage: 03-creating-your-first-scan
 ---
 
-Assuming you have the cluster and you are logged as a user who has the
+Assuming you have the cluster up and running and you are logged as a user who has the
 `cluster-admin` role, the first task it to install the operator. Even though
 we're going to be installing the latest release packaged by upstream and
 not deploying from the source, we're going to be creating several Kubernetes
@@ -93,4 +93,4 @@ Any errors would usually surface as `Events` attached to the respective
 Kubernetes objects.
 
 At this point, the Compliance Operator is up and running and we can move on
-to creating our first scan.
+to [creating our first scan](03-creating-your-first-scan.md).

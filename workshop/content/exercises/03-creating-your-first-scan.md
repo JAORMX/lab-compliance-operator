@@ -404,3 +404,5 @@ $ oc delete pod pv-extract
 ```
 
 Once you’re done with the extraction.
+
+We can now move on to [working with remediations](04-remediations.md)

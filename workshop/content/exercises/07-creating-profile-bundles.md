@@ -1,7 +1,7 @@
 ---
 Title: Troubleshooting
-PrevPage: 05-tailoring-profiles
-NextPage: ../finish
+PrevPage: 06-troubleshooting
+NextPage: 08-content-setup
 ---
 Creating your own ProfileBundles
 --------------------------------

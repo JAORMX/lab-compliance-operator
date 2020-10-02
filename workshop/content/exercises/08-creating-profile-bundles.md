@@ -1,7 +1,7 @@
 ---
 Title: Troubleshooting
 PrevPage: 07-content-setup
-NextPage: ../finish
+NextPage: 09-writing-rules
 ---
 Creating your own ProfileBundles
 --------------------------------
@@ -69,3 +69,8 @@ You'll see them appear as time passes.
 
 With that in place, you can now modify, build the content using the `./utils/build_ds_container.sh`
 script, and changes will be captured by the `ProfileBundle` automatically!.
+
+***
+
+Finally, we can move to the last topic which is about [writing your own rules
+](09-writing-rules.md).

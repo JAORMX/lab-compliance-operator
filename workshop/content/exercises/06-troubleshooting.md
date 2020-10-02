@@ -138,5 +138,7 @@ $ oc logs -l compliance.openshift.io/scan-name=rhcos4-e8-worker,workload=scanner
 Be aware that this is very verbose output, so you might want to store this in a file for further
 inspection.
 
+***
+
 In the next section we'll [prepare our development environment to start
 writing content](07-content-setup.md).

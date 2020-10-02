@@ -92,5 +92,7 @@ $ oc describe rs -lname=compliance-operator -nopenshift-compliance
 Any errors would usually surface as `Events` attached to the respective
 Kubernetes objects.
 
+***
+
 At this point, the Compliance Operator is up and running and we can move on
 to [creating our first scan](03-creating-your-first-scan.md).

@@ -97,5 +97,7 @@ the profile might disable by default or setting custom values for variables
 the profile might expose such as the SELinux state. You can learn more
 about the `TailoredProfile` by calling `oc explain tailoredprofile.spec`.
 
+***
+
 Let's now move to the next section will will give us tips on how to
 [debug scans for the compliance-operator](06-troubleshooting.md)

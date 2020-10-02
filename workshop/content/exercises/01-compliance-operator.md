@@ -20,4 +20,6 @@ It also provides the means to continuously evaluate your cluster. Thus
 making sure that the cluster will stay in compliance, and you'll always
 have recent scan results to show to your auditor.
 
+***
+
 [Let's install the operator!](02-installation.md)

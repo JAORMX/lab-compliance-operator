@@ -35,6 +35,16 @@ The agenda for the workshop looks as follows:
  * Useful labels
  * Troubleshooting OpenSCAP
 
+ ### Setting up your environment for content writing
+
+ * Installation
+ * Useful tools
+ * Using a VM
+
+ ### Creating your own ProfileBundles
+
+ ### Writing your own rules
+
 What to expect?
 ---------------
 
@@ -57,6 +67,10 @@ content, it would surely help you understand the bigger picture.
 There is a [self-paced lab](https://github.com/RedHatDemos/SecurityDemos/tree/master/2019Labs/CustomSecurityContent/documentation)
 that you can follow to learn about OpenSCAP and how to write content. We highly
 recommend it.
+
+[The developer guide](
+https://github.com/ComplianceAsCode/content/blob/master/docs/manual/developer_guide.adoc)
+is also a good aid in understanding the project's structure and options
 
 Ready?
 ======

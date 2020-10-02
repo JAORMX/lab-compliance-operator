@@ -6,7 +6,17 @@ NextPage: 07-creating-profile-bundles
 Setup
 -----
 
-The first step is making sure you have the environment ready that allows
+The compliance-operator uses the [ComplianceAsCode/content](https://github.com/ComplianceAsCode/content)
+project to compile and generate the security content (in the form of a data
+stream). When planning to modify this content, it is necessary to clone
+the project:
+
+```
+host$ git clone https://github.com/ComplianceAsCode/content.git
+host$ cd content
+```
+
+You need to make sure you have the environment ready that allows
 compiling and publishing new content.
 
 Using VSCode for content development is a good choice as there exist plugins

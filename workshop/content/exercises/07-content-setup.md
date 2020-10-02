@@ -1,7 +1,7 @@
 ---
 Title: Creating new content
-PrevPage: 07-creating-profile-bundles
-NextPage: ../finish
+PrevPage: 06-troubleshooting
+NextPage: 07-creating-profile-bundles
 ---
 Setup
 -----
@@ -149,3 +149,7 @@ extension in the window that opens for the remote connection as well.
 If you open the CIS profile at `ocp4/profiles/cis.profile`, you can test the
 extension by e.g. right-clicking a rule name and selecting "Open Rule". All
 the extension features also have keyboard shortcuts.
+
+In the next section we'll learn how to [create our own content images and
+`ProfileBundles`](08-creating-profile-bundles.md) which will help us write
+our own content.

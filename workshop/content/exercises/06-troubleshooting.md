@@ -1,7 +1,7 @@
 ---
 Title: Troubleshooting
 PrevPage: 05-tailoring-profiles
-NextPage: 07-creating-profile-bundles
+NextPage: 07-content-setup
 ---
 General tips
 ------------
@@ -138,6 +138,5 @@ $ oc logs -l compliance.openshift.io/scan-name=rhcos4-e8-worker,workload=scanner
 Be aware that this is very verbose output, so you might want to store this in a file for further
 inspection.
 
-In the next section we'll learn how to [create our own content images and
-`ProfileBundles`](07-creating-profile-bundles) which will help us write
-our own content.
+In the next section we'll [prepare our development environment to start
+writing content](07-content-setup.md).

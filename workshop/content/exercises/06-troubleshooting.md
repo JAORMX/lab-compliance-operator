@@ -89,6 +89,25 @@ NAME               PHASE     RESULT
 rhcos4-e8-worker   RUNNING   NOT-AVAILABLE
 ```
 
+> **NOTE**
+> 
+> Using the [`oc-compliance`](https://github.com/JAORMX/oc-compliance) plugin 
+> it's also possible to re-run the scans using the subcommand
+> `oc compliance rerun-now`. For this example, the invocation would have been:
+> 
+> ```
+> $ oc compliance rerun-now compliancescan rhcos4-e8-worker
+> ```
+> This will annotate the scan and re-run it.
+> 
+> The advante of this subcommand is that it'll also work on `ComplianceSuite` and
+> `ScanSettingBinding` objects. Which means that it'll re-trigger all of the scans
+> created by these objects.
+>
+> ```
+> $ oc compliance rerun-now -h
+> ```
+
 To get all the pods for this scan, we can do:
 
 ```

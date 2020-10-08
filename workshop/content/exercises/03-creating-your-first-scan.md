@@ -254,6 +254,23 @@ $ oc create -f periodic-e8.yaml
 scansettingbinding.compliance.openshift.io/periodic-e8 created
 ```
 
+> **NOTE**
+> 
+> Using the [`oc-compliance`](https://github.com/JAORMX/oc-compliance) plugin 
+> it's also possible to create `ScanSettingBindings` using the subcommand
+> `oc compliance bind`. For this example, the invocation would have been:
+> 
+> ```
+> $ oc compliance bind --name periodic-e8 --settings periodic-setting \
+>     profile/rhcos4-e8 profile/ocp4-e8
+> ```
+>
+> For more information on this command, do:
+> ```
+> $ oc compliance bind -h
+> ```
+
+
 The Compliance Operator would take these two objects and generate a
 `ComplianceSuite` object that itself references one `ComplianceScan`
 object for each role of a Node scan and one for the Platform scan:
@@ -404,6 +421,24 @@ $ oc delete pod pv-extract
 ```
 
 Once you’re done with the extraction.
+
+> **NOTE**
+> 
+> Using the [`oc-compliance`](https://github.com/JAORMX/oc-compliance) plugin 
+> it's also possible to extract the compliance results using the subcommand
+> `oc compliance fetch-raw`. For this example, the invocation would have been:
+> 
+> ```
+> $ mkdir results
+> $ oc compliance fetch-raw scansettingbindings periodic-e8 -o results
+> ```
+> This will fetch the raw results to the directory called `results` and clean up
+> by itself.
+>
+> For more information on this command, do:
+> ```
+> $ oc compliance fetch-raw -h
+> ```
 
 ***
 

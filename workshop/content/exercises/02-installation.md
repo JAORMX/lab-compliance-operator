@@ -47,8 +47,8 @@ The Subscription file can be edited to optionally deploy a custom version,
 see the `startingCSV` attribute in the `deploy/olm-catalog/subscription.yaml`
 file.
 
-At this point, the operator should be installed. Verify that the Compliance
-Operator deployment and pods are running:
+After a minute or two, the operator should be installed. Verify that the
+Compliance Operator deployment and pods are running:
 ```
 $ oc get deploy -nopenshift-compliance
 $ oc get pods -nopenshift-compliance

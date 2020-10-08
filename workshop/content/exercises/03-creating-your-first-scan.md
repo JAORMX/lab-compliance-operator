@@ -14,7 +14,7 @@ in XML files known as Data Streams. If not, it's not really required knowledge.
 
 For consumption by the Compliance Operator, the compliance content is
 packaged in container images, subsequently the Compliance Operator wraps
-and exposes the compliance content as native Kubernetes objects for better
+and exposes the compliance content in a CustomResource for better
 usability:
 	* **rule.compliance** is a single compliance check. For example the
 	  rule `rhcos4-service-auditd-enabled` checks if the `auditd` daemon
@@ -118,16 +118,21 @@ rules:
 title: Australian Cyber Security Centre (ACSC) Essential Eight
 ```
 
-The important things to note is that the object provides human-readable title
-description. In `metadata.annotations` we see `product-type` and `product` - the
-former is set to `Node` in this profile, which means the profile is meant
-to scan the cluster nodes. The other allowed value you would see with the
-`ocp4-*` profiles is `Platform` which denotes that the profile scans the
-Kubernetes cluster platform. This division exists to apply the principle
-of least privilege to each scan type, so that scans will only have the minimum
-permissions they need to run. In particular, Platform scans will not mount
-the host filesystem. The `product` annotation identifies the node or platform
-that this profile targets, in this case it's RHCOS 4.
+An important thing to note is that the object provides human-readable title
+descriptions. In `metadata.annotations` we see `product-type` and `product` -
+the former is set to `Node` in this profile, indicating that it only applies to
+scans of the cluster node, being an assessment of the compliance state of the
+nodes. The only other allowed `product-type` value you would see with the
+`ocp4-*` profiles is `Platform` which denotes that the profile only applies to
+scans of Kubernetes API resources, being an assessment of the compliance state
+of the platform.
+
+By organizing the profiles into these two types, it allows proper privilege
+separation at the operator level. The Platform checks only require the
+`cluster-reader` role, whereas the Node checks require a privileged host mount,
+so the operator uses independent workloads for each type, applying the
+principle of least privilege. The `product` annotation identifies the node or
+platform that this profile targets, in this case it's RHCOS 4.
 
 Finally and most importantly, the profile includes a large number of compliance
 rules that actually comprise the profile. We're going to explore the
@@ -179,8 +184,8 @@ what the profile covers.
 
 We've determined which profile we're going to scan with and what the
 profile actually does. Before actually creating the scan, we also need to
-think about settings of the scan - how often we want to run it, what amout
-of storage to dedicate to the scan results and so on. This is what the
+think about settings of the scan - how often we want to run it, what amount
+of storage to dedicate to the scan results, and so on. This is what the
 `ScanSetting` object is for. Let's see an example:
 ```
 apiVersion: compliance.openshift.io/v1alpha1
@@ -201,13 +206,13 @@ The `ScanSetting` object helps you define properties such as:
  * which nodes should be scanned, expressed as the node roles
  * how much storage will be allocated for the results
  * what is the retention policy for the results
- * will the scan run periodically and if yes, how often
+ * will the scan run periodically, and if yes, how often
 To display more details about the `ScanSetting` object, run `oc explain scansettings`,
 similarly you can also let `oc` explain any of the nested objects, e.g.
 `oc explain scansettings.rawResultStorage`.
 
 The example above would scan all nodes with role `master` or `worker`, allocate
-2Gi of storage for each of master and worker scans and keep the last five
+2Gi of storage for each of the master and worker scans, keeping the last five
 full scan results. In addition, the scan would run at 1:00AM every day.
 The `ScanSetting` object is decoupled from the actual scan definition so that
 you can share and reuse the same settings for different scans that
@@ -227,7 +232,7 @@ profiles:
   - name: rhcos4-e8
     kind: Profile
     apiGroup: compliance.openshift.io/v1alpha1
-  # Cluster checks
+  # Platform checks
   - name: ocp4-e8
     kind: Profile
     apiGroup: compliance.openshift.io/v1alpha1
@@ -239,11 +244,11 @@ settingsRef:
 
 There are two important pieces of a `ScanSettingBinding` object:
 
-* **profiles**: Contains a list of (`name,kind,apiGroup`) triples that make up
+* **profiles**: Contains a list of (`name,kind,apiGroup`) tuples that make up
   a selection of the `Profile` (or a `TailoredProfile` that we will explain later)
   to scan your environment with.
 * **settingsRef**: A reference to a `ScanSetting` object also using the
-  (`name,kind,apiGroup`) triple that references the operational constraints
+  (`name,kind,apiGroup`) tuple that references the operational constraints.
 
 Save both the `ScanSetting` and the `ScanSettingBinding` manifests to a
 file and create them:
@@ -271,9 +276,9 @@ scansettingbinding.compliance.openshift.io/periodic-e8 created
 > ```
 
 
-The Compliance Operator would take these two objects and generate a
-`ComplianceSuite` object that itself references one `ComplianceScan`
-object for each role of a Node scan and one for the Platform scan:
+The Compliance Operator takes these two objects and generates a
+`ComplianceSuite` object that references a `ComplianceScan` object for each
+role of a Node scan and one for the Platform scan:
 ```
 $ oc get compliancesuite -nopenshift-compliance
 NAME                                  PHASE     RESULT
@@ -287,7 +292,7 @@ rhcos4-e8-worker         RUNNING   NOT-AVAILABLE
 You can think of `ComplianceSuite` as a collection of `ComplianceScan`
 objects with an aggregated status.
 
-Now are scans are up and running. The scans would go through several
+Now our scans are up and running. The scans go through several
 phases (`LAUNCHING`, `RUNNING`, `AGGREGATING` and `DONE`). This can
 take up to several minutes. The phase and result are tracked by the
 operator in the `status` subresource and look like this:
@@ -300,7 +305,7 @@ Status:
     Namespace:  openshift-compliance
 ```
 
-Eventually it is expected that the scans would converge in the `DONE`
+Eventually, it is expected that the scans converge in the `DONE`
 phase and all the results would be `NON-COMPLIANT`. It might be useful
 to know that events are issued for the scans and the suites in case they
 reach a result. You can view the events with `oc describe compliancescan`,
@@ -313,7 +318,7 @@ Events:
 ```
 
 Once the scans are finished, we can take a look at the scan results.
-Those are represented as Kubernetes object `compliancecheckresult`
+Those are represented as the CustomResource `compliancecheckresult`
 and labeled with the scan name:
 ```
 $ oc get compliancecheckresults -nopenshift-compliance -lcompliance.openshift.io/scan-name=ocp4-e8
@@ -332,18 +337,18 @@ $ oc get compliancecheckresults -lcompliance.openshift.io/scan-name=ocp4-e8,comp
 ```
 
 Some failing checks must be remediated manually, while some can be
-remediated automaticaly. Those that can be remediated automatically have
+remediated automatically. Those that can be remediated automatically have
 a corresponding `ComplianceRemediation` object created. The next chapter
 deals with remediations in detail.
 
-While the `ComplianceCheckResult` objects provide a useful abstraction
-and allow you to browse the results quickly, some organizations or auditors
-might require to view the raw test results. OpenSCAP provides them in a
-format called ARF (Asset Reporting Format) that's often used to import the
-results into other third-party tools. The ARF results are uploaded from the
-pods that actually perform the scans to a `PersistentVolume` and rotated as
-set by the `rawResultStorage` parameter of the `ScanSetting` object. To see
-what `PersistentVolumeClaims` store the results, inspect the scan statuses:
+While the `ComplianceCheckResult` objects provide a useful abstraction and
+allow you to browse the results quickly, some organizations or auditors might
+require the gory details. OpenSCAP provides raw results in a format called ARF
+(Asset Reporting Format), that's often used to import the results into other
+third-party tools. The ARF results are uploaded from the pods that actually
+perform the scans to a `PersistentVolume` and rotated according to the
+`rawResultStorage.rotation` parameter of the `ScanSetting` object. To see what
+`PersistentVolumeClaims` store the results, inspect the scan statuses:
 ```
 $ oc get compliancescans -o jsonpath='{.items[*].status.resultsStorage}' | jq
 {

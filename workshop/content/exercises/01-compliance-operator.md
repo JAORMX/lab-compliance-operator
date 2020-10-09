@@ -8,17 +8,19 @@ Compliance Operator
 ===================
 
 The Compliance Operator lets administrators describe the desired compliance
-state of a cluster and provides them with an overview of gaps and ways to
-remediate them.
+state of a cluster, and works natively with OCP to try to bring the cluster
+into compliance automatically.  Along the way, the operator provides feedback
+to the administrator to help resolve any problems or gaps in the policy,
+including manual remediations.
 
-It assesses compliance of both the Kubernetes part of OpenShift as well
-as the nodes running the cluster. Under the hood, the Compliance Operator
-uses OpenSCAP, a NIST-certified tool, to scan and enforce security policies
-provided by the content.
+Under the hood, the operator assesses compliance of both the Kubernetes part of
+OpenShift as well as the nodes running the cluster with the NIST-certified
+OpenSCAP tool.  OpenSCAP makes a compliance assessment based on the policy
+rules defined by the content.
 
-It also provides the means to continuously evaluate your cluster. Thus
-making sure that the cluster will stay in compliance, and you'll always
-have recent scan results to show to your auditor.
+The operator also provides the means to continuously evaluate, making sure that
+the cluster will stay in compliance; You'll always have up-to-date scan results
+to show to your auditor.
 
 ***
 

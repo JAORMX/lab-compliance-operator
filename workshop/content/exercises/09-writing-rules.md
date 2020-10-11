@@ -92,10 +92,10 @@ template:
     vars:
         filepath: /api/v1/namespaces/openshift/configmaps/my-compliance-configmap
         yamlpath: ".data.compliant"
-        value: "yep"
-        negate: "false"
         ocp_data: "true"
         entity_check: "at least one"
+        values:
+            - value: "yep"
 ```
 
 This template will make the build system generate the appropriate OVAL check

@@ -191,6 +191,7 @@ think about settings of the scan - how often we want to run it, what amount
 of storage to dedicate to the scan results, and so on. This is what the
 `ScanSetting` object is for. Let's see an example:
 ```
+$ cat << EOF > periodic-setting.yaml
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSetting
 metadata:
@@ -203,6 +204,7 @@ rawResultStorage:
 roles:
   - worker
   - master
+EOF
 ```
 
 The `ScanSetting` object helps you define properties such as:
@@ -225,6 +227,7 @@ The scan itself, or the intent of the scan is expressed using the
 `ScanSettingBinding` object. The following example shows an example
 of defining the scan for the `e8` profile we were exploring earlier:
 ```
+$ cat << EOF > periodic-e8.yaml
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSettingBinding
 metadata:
@@ -243,6 +246,7 @@ settingsRef:
   name: periodic-setting
   kind: ScanSetting
   apiGroup: compliance.openshift.io/v1alpha1
+EOF
 ```
 
 There are two important pieces of a `ScanSettingBinding` object:

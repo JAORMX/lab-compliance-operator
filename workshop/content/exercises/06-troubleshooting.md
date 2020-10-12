@@ -77,16 +77,16 @@ This setting will be taken into use once the scans re-run. To force a re-run, le
 annotate one of the scans:
 
 ```
-$ oc annotate compliancescan rhcos4-e8-worker "compliance.openshift.io/rescan="
-compliancescan.compliance.openshift.io/rhcos4-e8-worker annotated
+$ oc annotate compliancescan rhcos4-no-kptr-restrict-worker "compliance.openshift.io/rescan="
+compliancescan.compliance.openshift.io/rhcos4-no-kptr-restrict-worker annotated
 ```
 
 you'll notice that the scan is now running:
 
 ```
-$ oc get compliancescans rhcos4-e8-worker
+$ oc get compliancescans rhcos4-no-kptr-restrict-worker
 NAME               PHASE     RESULT
-rhcos4-e8-worker   RUNNING   NOT-AVAILABLE
+rhcos4-no-kptr-restrict-worker   RUNNING   NOT-AVAILABLE
 ```
 
 > **NOTE**
@@ -96,7 +96,7 @@ rhcos4-e8-worker   RUNNING   NOT-AVAILABLE
 > `oc compliance rerun-now`. For this example, the invocation would have been:
 > 
 > ```
-> $ oc compliance rerun-now compliancescan rhcos4-e8-worker
+> $ oc compliance rerun-now compliancescan rhcos4-no-kptr-restrict-worker
 > ```
 > This will annotate the scan and re-run it.
 > 
@@ -111,30 +111,30 @@ rhcos4-e8-worker   RUNNING   NOT-AVAILABLE
 To get all the pods for this scan, we can do:
 
 ```
-$ oc get pods -l compliance.openshift.io/scan-name=rhcos4-e8-worker
-NAME                                                READY   STATUS      RESTARTS   AGE
-aggregator-pod-rhcos4-e8-worker                     0/1     Completed   0          60s
-rhcos4-e8-worker-ip-10-0-143-189.ec2.internal-pod   0/2     Completed   0          100s
-rhcos4-e8-worker-ip-10-0-156-174.ec2.internal-pod   0/2     Completed   0          100s
-rhcos4-e8-worker-ip-10-0-174-227.ec2.internal-pod   0/2     Completed   0          100s
+$ oc get pods -l compliance.openshift.io/scan-name=rhcos4-no-kptr-restrict-worker
+NAME                                                              READY   STATUS      RESTARTS   AGE
+aggregator-pod-rhcos4-no-kptr-restrict-worker                     0/1     Completed   0          60s
+rhcos4-no-kptr-restrict-worker-ip-10-0-143-189.ec2.internal-pod   0/2     Completed   0          100s
+rhcos4-no-kptr-restrict-worker-ip-10-0-156-174.ec2.internal-pod   0/2     Completed   0          100s
+rhcos4-no-kptr-restrict-worker-ip-10-0-174-227.ec2.internal-pod   0/2     Completed   0          100s
 ```
 
 To get only pods for a specific workload (e.g. only scanner pods), we have the `workload`
 label available:
 
 ```
-$ oc get pods -l compliance.openshift.io/scan-name=rhcos4-e8-worker,workload=scanner
-NAME                                                READY   STATUS      RESTARTS   AGE
-rhcos4-e8-worker-ip-10-0-143-189.ec2.internal-pod   0/2     Completed   0          2m48s
-rhcos4-e8-worker-ip-10-0-156-174.ec2.internal-pod   0/2     Completed   0          2m48s
-rhcos4-e8-worker-ip-10-0-174-227.ec2.internal-pod   0/2     Completed   0          2m48s
+$ oc get pods -l compliance.openshift.io/scan-name=rhcos4-no-kptr-restrict-worker,workload=scanner
+NAME                                                              READY   STATUS      RESTARTS   AGE
+rhcos4-no-kptr-restrict-worker-ip-10-0-143-189.ec2.internal-pod   0/2     Completed   0          2m48s
+rhcos4-no-kptr-restrict-worker-ip-10-0-156-174.ec2.internal-pod   0/2     Completed   0          2m48s
+rhcos4-no-kptr-restrict-worker-ip-10-0-174-227.ec2.internal-pod   0/2     Completed   0          2m48s
 ```
 
 To see the `oscap` logs, which are now verbose, we can fetch the logs of one of these pods,
 and specifically for the `scanner` container:
 
 ```
-$ oc logs rhcos4-e8-worker-ip-10-0-143-189.ec2.internal-pod -c scanner
+$ oc logs rhcos4-no-kptr-restrict-worker-ip-10-0-143-189.ec2.internal-pod -c scanner
 Running oscap-chroot as oscap-chroot /host xccdf eval --verbose INFO --fetch-remote-resources --profile xccdf_org.ssgproject.content_profile_e8 --results-arf /tmp/report-arf.xml /content/ssg-rhcos4-ds.xml
 The scanner returned 2
 I: oscap: Identified document type: data-stream-collection
@@ -151,7 +151,7 @@ I: oscap: Switching probe to PROBE_OFFLINE_OWN mode.
 You can also get all the logs for the scanners at the same time:
 
 ```
-$ oc logs -l compliance.openshift.io/scan-name=rhcos4-e8-worker,workload=scanner -c scanner --tail=-1  > oscap-logs.txt
+$ oc logs -l compliance.openshift.io/scan-name=rhcos4-no-kptr-restrict-worker,workload=scanner -c scanner --tail=-1  > oscap-logs.txt
 ```
 
 Be aware that this is very verbose output, so you might want to store this in a file for further

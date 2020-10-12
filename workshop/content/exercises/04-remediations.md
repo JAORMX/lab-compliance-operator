@@ -21,7 +21,7 @@ an explanation on the `spec` section, you can do `oc explain complianceremediati
 To list al the remediations that were generated as part of a specific suite run, you can do:
 
 ```
-oc get complianceremediations -l complianceoperator.openshift.io/suite=<suite name>
+oc get complianceremediations -l compliance.openshift.io/suite=<suite name>
 ```
 
 Let's see the remediations that came from the scan we did in the previous exercise

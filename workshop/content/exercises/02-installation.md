@@ -16,7 +16,7 @@ $ oc create -f https://raw.githubusercontent.com/openshift/compliance-operator/m
 namespace/openshift-compliance created
 ```
 
-We'll be using the OpenShift (Operator Lifecycle Manager)[https://docs.openshift.com/container-platform/4.5/operators/understanding_olm/olm-understanding-olm.html)
+We'll be using the OpenShift [Operator Lifecycle Manager](https://docs.openshift.com/container-platform/4.5/operators/understanding_olm/olm-understanding-olm.html)
 so we'll continue by creating several objects that describe the operator for
 the OLM. First, we'll create the `CatalogSource` and verify that it's been
 created successfully:

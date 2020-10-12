@@ -27,7 +27,7 @@ usability:
           product where product might be `ocp4` or `rhcos4`.
 
 By default, the Compliance Operator creates two `profilebundle` objects, one for
-OCP and one for RHCOS based on the (upstream ComplianceAsCode content images)[https://quay.io/repository/complianceascode/ocp4]:
+OCP and one for RHCOS based on the [upstream ComplianceAsCode content images](https://quay.io/repository/complianceascode/ocp4):
 ```
 $ oc get profilebundle.compliance
 NAME     CONTENTIMAGE                           STATUS

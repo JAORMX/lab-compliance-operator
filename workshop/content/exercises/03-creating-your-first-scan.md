@@ -357,7 +357,7 @@ perform the scans to a `PersistentVolume` and rotated according to the
 `rawResultStorage.rotation` parameter of the `ScanSetting` object. To see what
 `PersistentVolumeClaims` store the results, inspect the scan statuses:
 ```
-$ oc get compliancescans -o jsonpath='{.items[*].status.resultsStorage}' | jq
+$ oc get compliancescans -o json | jq '.items[].status.resultsStorage'
 {
   "name": "ocp4-e8",
   "namespace": "openshift-compliance"

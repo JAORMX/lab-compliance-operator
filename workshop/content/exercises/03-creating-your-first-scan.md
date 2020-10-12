@@ -8,6 +8,13 @@ This chapter will show you how to create, run and evaluate a compliance
 scan. Before actually starting a scan, we need to select a baseline we'll
 be scanning against.
 
+First, make sure that you're in the appropriate namespace for working with the
+operator. To do so, do:
+
+```
+oc project openshift-compliance
+```
+
 If you're familiar with OpenSCAP, you might be already familiar with how the
 compliance content is shipped, with the concept of profiles, distributed
 in XML files known as Data Streams. If not, it's not really required knowledge.

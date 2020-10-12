@@ -38,18 +38,19 @@ rhcos4   quay.io/complianceascode/ocp4:latest   VALID
 Inspecting the ProfileBundle objects, you'll see that they mostly point to the
 content image and a file inside the image, relative to the root directory:
 ```
-- apiVersion: compliance.openshift.io/v1alpha1
-  kind: ProfileBundle
-  metadata:
-    name: rhcos4
-    namespace: openshift-compliance
-    selfLink: /apis/compliance.openshift.io/v1alpha1/namespaces/openshift-compliance/profilebundles/rhcos4
-    uid: f5516313-5f16-4ff8-9c69-d79d44126b8b
-  spec:
-    contentFile: ssg-rhcos4-ds.xml
-    contentImage: quay.io/complianceascode/ocp4:latest
-  status:
-    dataStreamStatus: VALID
+$ oc get profilebundle.compliance rhcos4 -o yaml
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ProfileBundle
+metadata:
+  name: rhcos4
+  namespace: openshift-compliance
+  selfLink: /apis/compliance.openshift.io/v1alpha1/namespaces/openshift-compliance/profilebundles/rhcos4
+  uid: f5516313-5f16-4ff8-9c69-d79d44126b8b
+spec:
+  contentFile: ssg-rhcos4-ds.xml
+  contentImage: quay.io/complianceascode/ocp4:latest
+status:
+  dataStreamStatus: VALID
 ```
 The `status.dataStreamStatus` field is set by the operator and reflects
 the result of the content parsing.
@@ -66,6 +67,7 @@ rhcos4-ncp        5h2m
 For the rest of the chapter we'll be working with the `e8` profile. Inspecting
 the profile shows the following:
 ```
+$ oc get profile.compliance rhcos4-e8 -o yaml
 apiVersion: compliance.openshift.io/v1alpha1
 description: |-
   This profile contains configuration checks for Red Hat Enterprise Linux CoreOS
@@ -142,6 +144,7 @@ $ oc get rule.compliance rhcos4-accounts-no-uid-except-zero -nopenshift-complian
 ```
 The (trimmed) result looks somewhat like:
 ```
+$ oc get rule.compliance rhcos4-accounts-no-uid-except-zero -o yaml
 apiVersion: compliance.openshift.io/v1alpha1
 description: <br />If the account is associated with system commands or applications the UID&#xA;should be changed to one greater than &#34;0&#34; but less than &#34;1000.&#34;&#xA;Otherwise assign a UID greater than &#34;1000&#34; that has not already been&#xA;assigned.
 id: xccdf_org.ssgproject.content_rule_accounts_no_uid_except_zero

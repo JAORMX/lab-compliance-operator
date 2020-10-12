@@ -106,7 +106,7 @@ rule that this remediation came from. Unfortunately, the rule names could get qu
 object references are stored as annotations. So, let's get the relevant annotation and use that to search for the relevant rule:
 
 ```
-$ oc get compliancecheckresult rhcos4-e8-worker-sysctl-kernel-dmesg-restrict -o jsonpath="{.metadata.annotations}"
+$ oc get compliancecheckresult rhcos4-e8-worker-sysctl-kernel-dmesg-restrict -o json | jq -r ".metadata.annotations"
 {"compliance.openshift.io/rule":"sysctl-kernel-dmesg-restrict"}
 ```
 

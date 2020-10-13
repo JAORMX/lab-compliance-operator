@@ -391,6 +391,7 @@ sleeps, then copy the files out of the PVC to a local filesystem.
 The pod definition could look like this:
 
 ```
+$ cat << EOF > pv-extract-pod.yaml
 apiVersion: "v1"
 kind: Pod
 metadata:
@@ -407,6 +408,9 @@ spec:
     - name: master-scan-vol
       persistentVolumeClaim:
         claimName: rhcos4-e8-master
+EOF
+
+$ oc create -f pv-extract-pod.yaml
 ```
 
 Copy this manifest, define the pod, then copy the results:

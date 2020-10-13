@@ -21,6 +21,7 @@ applied.
 In order to do that, we're going to create a `TailoredProfile` based
 on the original `rhcos4-e8` profile by applying the following manifest:
 ```
+$ cat << EOF > rhcos-4-no-kptr-restrict.yaml 
 apiVersion: compliance.openshift.io/v1alpha1
 kind: TailoredProfile
 metadata:
@@ -32,6 +33,7 @@ spec:
   disableRules:
     - name: rhcos4-sysctl-kernel-kptr-restrict
       rationale: We really need this functionality
+EOF
 ```
 
 Except for the usual metadata like name and namespace, there are several
@@ -45,7 +47,7 @@ attributes to note in the manifest:
 
 Save the manifest in a file and create the Kubernetes object:
 ```
-$ oc create -f tailoring/rhcos-4-no-kptr-restrict.yaml 
+$ oc create -f rhcos-4-no-kptr-restrict.yaml 
 tailoredprofile.compliance.openshift.io/rhcos4-no-kptr-restrict created
 ```
 
@@ -57,6 +59,7 @@ it would also be possible to edit the `ScanSettingBinding`, but for demonstratio
 purposes, it is easier to recreate the object as the scans would also be
 re-ran automatically. The new `ScanSettingBinding` manifest looks like this:
 ```
+$ cat << EOF > bindings-tailored.yaml
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ScanSettingBinding
 metadata:
@@ -75,6 +78,7 @@ settingsRef:
   name: periodic-setting
   kind: ScanSetting
   apiGroup: compliance.openshift.io/v1alpha1
+EOF
 ```
 Note that the first item in the `profiles` array is now of kind
 `TailoredProfile` and points to the previously created `rhcos4-no-kptr-restrict`

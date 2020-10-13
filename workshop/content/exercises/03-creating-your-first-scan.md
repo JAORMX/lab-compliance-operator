@@ -415,7 +415,7 @@ Copy this manifest, define the pod, then copy the results:
 ```
 $ oc create -f pv-extract.yaml
 pod/pv-extract created
-$ oc cp pv-extract:/master-scan-results .
+$ oc cp pv-extract:/master-scan-results ./extract_results_dir
 tar: Removing leading `/' from member names
 ```
 The results are stored in directories numbered sequentially with the

@@ -11,7 +11,7 @@ If you already need to do this, you might as well create your own `ProfileBundle
 
 The requirements for creating your own content image are quite simple. All
 you need to do is create a container image with the data stream XML file
-on the root of the container's file system, and that container image much
+on the root of the container's file system, and that container image must
 contain the `cp` binary. The `cp` utility is used to copy the data stream file
 from the container image to a volume so the scanner can take it into use.
 

@@ -18,7 +18,7 @@ for you. They are accessible as any other Kubernetes object.
 You can even inspect them as other objects via `oc explain complianceremediation`. e.g. to see
 an explanation on the `spec` section, you can do `oc explain complianceremediation.spec`.
 
-To list al the remediations that were generated as part of a specific suite run, you can do:
+To list all the remediations that were generated as part of a specific suite run, you can do:
 
 ```
 oc get complianceremediations -l compliance.openshift.io/suite=<suite name>
@@ -67,7 +67,7 @@ metadata:
   selfLink: /apis/compliance.openshift.io/v1alpha1/namespaces/openshift-compliance/complianceremediations/rhcos4-e8-worker-sysctl-kernel-dmesg-restrict
   uid: cb8e972a-4257-47fb-817d-db60b1fd20bc
 spec:
-  apply: false
+  apply: true
   current:
     object:
       apiVersion: machineconfiguration.openshift.io/v1
@@ -75,13 +75,13 @@ spec:
       spec:
         config:
           ignition:
-            version: 2.2.0
+            version: 3.1.0
           storage:
             files:
             - contents:
-                source: data:,kernel.dmesg_restrict%3D1
-              filesystem: root
+                source: data:,kernel.dmesg_restrict%3D1%0A
               mode: 420
+              overwrite: true
               path: /etc/sysctl.d/75-sysctl_kernel_dmesg_restrict.conf
   outdated: {}
 status:
@@ -169,48 +169,48 @@ create this object in the cluster. Let's take a look at what the operator did:
 
 ```
 $ oc get machineconfigs
-NAME                                                        GENERATEDBYCONTROLLER                      IGNITIONVERSION   AGE
-00-master                                                   41d29dde06d6c72fde07b8c613743c0feb703b92   2.2.0             76m
+NAME                                               GENERATEDBYCONTROLLER                      IGNITIONVERSION   AGE
+00-master                                          522f0fa36cc7b952c6e98e120c58c66e6d795544   3.1.0             136m
 ...
-75-rhcos4-e8-worker-periodic-e8
+75-rhcos4-e8-worker-sysctl-kernel-dmesg-restrict                                              3.1.0             2m
 ...
-rendered-worker-e0b9f65ad061103ad45716abf62b5f46            41d29dde06d6c72fde07b8c613743c0feb703b92   2.2.0             2m12s
+rendered-worker-d9660384409dbfe5b05ff543c69ef81a   522f0fa36cc7b952c6e98e120c58c66e6d795544   3.1.0             115s
 ```
 
 The output has been trimmed for readability. But the main thing to note is that a MachineConfig called
-`75-rhcos4-e8-worker-periodic-e8` was created. If we inspect it we'll notice that it has the same
+`75-rhcos4-e8-worker-sysctl-kernel-dmesg-restrict` was created. If we inspect it we'll notice that it has the same
 contents as the remediation that we just applied.
 
 ```
-$ oc get machineconfig 75-rhcos4-e8-worker-periodic-e8 -o yaml
+$ oc get machineconfig 75-rhcos4-e8-worker-sysctl-kernel-dmesg-restrict -o yaml
 apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
   annotations:
-    remediation/rhcos4-e8-worker-sysctl-kernel-dmesg-restrict: "2"
-  creationTimestamp: "2020-09-08T12:31:07Z"
+    compliance.openshift.io/remediation: ""
+  creationTimestamp: "2021-02-16T18:54:43Z"
   generation: 1
   labels:
+    compliance.openshift.io/scan-name: rhcos4-e8-worker
+    compliance.openshift.io/suite: periodic-e8
     machineconfiguration.openshift.io/role: worker
-  name: 75-rhcos4-e8-worker-periodic-e8
-  resourceVersion: "41724"
-  selfLink: /apis/machineconfiguration.openshift.io/v1/machineconfigs/75-rhcos4-e8-worker-periodic-e8
-  uid: 85feacdb-d86f-40b7-8b09-f38e3ff4226f
+  managedFields:
+...
+  name: 75-rhcos4-e8-worker-sysctl-kernel-dmesg-restrict
+  resourceVersion: "136045"
+  selfLink: /apis/machineconfiguration.openshift.io/v1/machineconfigs/75-rhcos4-e8-worker-sysctl-kernel-dmesg-restrict
+  uid: 267bda7e-b170-4817-b9f5-89047e7888f5
 spec:
   config:
     ignition:
-      version: 2.2.0
+      version: 3.1.0
     storage:
       files:
       - contents:
-          source: data:,kernel.dmesg_restrict%3D1
-        filesystem: root
+          source: data:,kernel.dmesg_restrict%3D1%0A
         mode: 420
+        overwrite: true
         path: /etc/sysctl.d/75-sysctl_kernel_dmesg_restrict.conf
-  fips: false
-  kernelArguments: []
-  kernelType: default
-  osImageURL: ""
 ```
 
 Now we can just let the **machine-config-operator** do its job and apply this configuration

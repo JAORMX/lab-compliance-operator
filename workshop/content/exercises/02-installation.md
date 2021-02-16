@@ -32,8 +32,8 @@ redhat-marketplace    Red Hat Marketplace            grpc   Red Hat             
 redhat-operators      Red Hat Operators              grpc   Red Hat                                    24m
 ```
 
-The `CatalogSource` represents metadata that OLM can use to discovery and
-install Operators. Once that is installed, we can continue by installing
+The `CatalogSource` represents metadata that OLM can use to discover and
+install Operators. Once the `CatalogSource` is created, we can continue by
 telling OLM that we want to install the Compliance Operator to the `openshift-compliance`
 namespace by creating the `OperatorGroup` and the `Subscription` objects:
 ```
@@ -91,6 +91,10 @@ $ oc describe rs -lname=compliance-operator -nopenshift-compliance
 ```
 Any errors would usually surface as `Events` attached to the respective
 Kubernetes objects.
+
+Note: If you are developing content and already have the ComplianceAsCode
+project checked out, you can run `./utils/deploy_compliance_operator.sh` to do
+the above install.
 
 ***
 

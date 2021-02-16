@@ -37,9 +37,9 @@ By default, the Compliance Operator creates two `profilebundle` objects, one for
 OCP and one for RHCOS based on the [upstream ComplianceAsCode content images](https://quay.io/repository/complianceascode/ocp4):
 ```
 $ oc get profilebundle.compliance
-NAME     CONTENTIMAGE                           STATUS
-ocp4     quay.io/complianceascode/ocp4:latest   VALID
-rhcos4   quay.io/complianceascode/ocp4:latest   VALID
+NAME     CONTENTIMAGE                           CONTENTFILE         STATUS
+ocp4     quay.io/complianceascode/ocp4:latest   ssg-ocp4-ds.xml     VALID
+rhcos4   quay.io/complianceascode/ocp4:latest   ssg-rhcos4-ds.xml   VALID
 ```
 
 Inspecting the ProfileBundle objects, you'll see that they mostly point to the
@@ -69,6 +69,8 @@ NAME              AGE
 rhcos4-e8         5h2m
 rhcos4-moderate   5h2m
 rhcos4-ncp        5h2m
+rhcos4-ospp       5h2m
+rhcos4-stig       5h2m
 ```
 
 For the rest of the chapter we'll be working with the `e8` profile. Inspecting
@@ -187,7 +189,7 @@ title: Verify Only Root Has UID 0
 The attributes describe what the rule does (`description`), why are we checking
 this rule (`rationale`), how important it is to remediate the rule in case it
 fails (`severity`). The metadata include some operational attributes as well
-as list of controls the rule covers (`control.compliance.openshift.io/NIST-800-53`,
+as a list of controls the rule covers (`control.compliance.openshift.io/NIST-800-53`,
 `policies.open-cluster-management.io/controls`, the latter is used by RHACM).
 You can inspect all the rules in the profile like this to get a better idea of
 what the profile covers.
@@ -329,6 +331,17 @@ Events:
   Type    Reason           Age   From      Message
   ----    ------           ----  ----      -------
   Normal  ResultAvailable  39m   scanctrl  ComplianceScan's result is: NON-COMPLIANT
+```
+
+You can also use `oc get events`:
+```
+$ oc get events --field-selector reason=ResultAvailable -nopenshift-compliance
+LAST SEEN   TYPE     REASON            OBJECT                            MESSAGE
+4m57s       Normal   ResultAvailable   compliancescan/ocp4-e8            ComplianceScan's result is: NON-COMPLIANT
+4m2s        Normal   ResultAvailable   compliancesuite/periodic-e8       The result is: NON-COMPLIANT
+4m2s        Normal   ResultAvailable   scansettingbinding/periodic-e8    The result is: NON-COMPLIANT
+4m27s       Normal   ResultAvailable   compliancescan/rhcos4-e8-master   ComplianceScan's result is: NON-COMPLIANT
+4m2s        Normal   ResultAvailable   compliancescan/rhcos4-e8-worker   ComplianceScan's result is: NON-COMPLIANT
 ```
 
 Once the scans are finished, we can take a look at the scan results.

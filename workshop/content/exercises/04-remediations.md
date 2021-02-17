@@ -257,48 +257,14 @@ be any unnecessary node reboots.
 Let's do so!
 
 ```
-$ oc patch complianceremediations rhcos4-e8-worker-sysctl-kernel-kexec-load-disabled \
+$ oc patch complianceremediations rhcos4-e8-worker-sysctl-kernel-randomize-va-space \
     -p '{"spec":{"apply":true}}' --type=merge
-complianceremediation.compliance.openshift.io/rhcos4-e8-worker-sysctl-kernel-kexec-load-disabled patched
+complianceremediation.compliance.openshift.io/rhcos4-e8-worker-sysctl-kernel-randomize-va-space patched
 $ oc patch complianceremediations rhcos4-e8-worker-sysctl-kernel-unprivileged-bpf-disabled \
     -p '{"spec":{"apply":true}}' --type=merge
 complianceremediation.compliance.openshift.io/rhcos4-e8-worker-sysctl-kernel-unprivileged-bpf-disabled patched
 ```
-
-We can now browse the **MachineConfig** object and check that the new remediations have been included.
-
-```
-$ oc get machineconfig 75-rhcos4-e8-worker-periodic-e8 -o jsonpath='{.spec.config.storage.files}' | jq
-[
-  {
-    "contents": {
-      "source": "data:,kernel.dmesg_restrict%3D1"
-    },
-    "filesystem": "root",
-    "mode": 420,
-    "path": "/etc/sysctl.d/75-sysctl_kernel_dmesg_restrict.conf"
-  },
-  {
-    "contents": {
-      "source": "data:,kernel.kexec_load_disabled%3D1"
-    },
-    "filesystem": "root",
-    "mode": 420,
-    "path": "/etc/sysctl.d/75-sysctl_kernel_kexec_load_disabled.conf"
-  },
-  {
-    "contents": {
-      "source": "data:,kernel.unprivileged_bpf_disabled%3D1"
-    },
-    "filesystem": "root",
-    "mode": 420,
-    "path": "/etc/sysctl.d/75-sysctl_kernel_unprivileged_bpf_disabled.conf"
-  }
-]
-```
-
-Now that the compliance-operator has persisted the remediations to the relevant object,
-we may un-pause the pool and let the machine-config-operator persist the changes.
+Now we un-pause the pool and let the machine-config-operator persist the changes.
 
 ```
 $ oc patch machineconfigpools worker -p '{"spec":{"paused":false}}' --type=merge
